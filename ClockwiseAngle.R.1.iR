@@ -1,0 +1,55 @@
+
+#Para calcular angulo entre vectores (primero alternativa en 2d)
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/ClockwiseAngle.R|2|0")) browser()};angularMeasures2d <- function(vector,axis)
+{
+ #vector tendra 2 elementos x e y, as� como axis (de la forma c(1,2))
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/ClockwiseAngle.R|5|0")) browser()};dot<-axis[1]*vector[1]+axis[2]*vector[2]
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/ClockwiseAngle.R|6|0")) browser()};det<-axis[1]*vector[2]-vector[1]*axis[2]
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/ClockwiseAngle.R|7|0")) browser()};angle<-atan2(det,dot)
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/ClockwiseAngle.R|8|0")) browser()};if (angle<0){angle<-angle+(2*pi)}
+#angle<-(angle+(2*pi))%% (2*pi)
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/ClockwiseAngle.R|10|0")) browser()};return(angle*180/pi)
+}
+
+###
+# Para calcular angulo entre vectores con matrices
+### el original
+#angularMeasures2 <- function(vector,axis,inclination.axis = c(0,0,1) )
+#{
+  #if(is.vector(vector))
+  #{
+    #azimuth <- (atan2(axis[1]*vector[2] - axis[2]*vector[1], t(axis)%*%vector) + 2*pi) %% (2*pi)
+    #inclination <- pi/2 - atan2(vector[1]*inclination.axis[3] - vector[3]*inclination.axis[1], t(vector)%*%inclination.axis) %% (pi)
+    #return(c(azimuth,inclination))
+  #}
+  #else
+  #{
+    #azimuth <- (atan2(axis[,1]*vector[,2] - axis[,2]*vector[,1],
+                      #rowMeans(axis*vector)*3)
+                #+ 2*pi) %% (2*pi)
+    #aux_inc <- matrix(rep(inclination.axis,nrow(vector)),nrow=nrow(vector),byrow=T)
+    #inclination <- pi/2 - atan2(vector[,1]*aux_inc[,3] - vector[,3]*aux_inc[,1],
+                                #rowMeans(vector * aux_inc) *3) %% (pi)
+    #return(list(azimuth=azimuth,inclination=inclination))
+  #}
+#}
+
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/ClockwiseAngle.R|36|0")) browser()};angularMeasures2 <- function(vector,axis)
+{
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/ClockwiseAngle.R|38|0")) browser()};  if(is.vector(vector))
+  {
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/ClockwiseAngle.R|40|0")) browser()};	dot<-axis[1]*vector[1]+axis[2]*vector[2]
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/ClockwiseAngle.R|41|0")) browser()};	det<-axis[1]*vector[2]-vector[1]*axis[2]
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/ClockwiseAngle.R|42|0")) browser()};    azimuth <- atan2(det, dot)
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/ClockwiseAngle.R|43|0")) browser()};	if (azimuth<0){azimuth<-azimuth+(2*pi)}
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/ClockwiseAngle.R|44|0")) browser()};    return(c(azimuth))
+  }
+  else
+  {
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/ClockwiseAngle.R|48|0")) browser()};	dot<-axis[,1]*vector[,1]+axis[,2]*vector[,2]
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/ClockwiseAngle.R|49|0")) browser()};	det<-axis[,1]*vector[,2]-vector[,1]*axis[,2]
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/ClockwiseAngle.R|50|0")) browser()};    azimuth <- atan2(det,dot)
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/ClockwiseAngle.R|51|0")) browser()};	angle<-lapply(azimuth,function(x) {if (x<0){x<-x+(2*pi)}else{x<-x}})
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/ClockwiseAngle.R|52|0")) browser()};    return(list(azimuth=angle))
+  }
+}

@@ -1,0 +1,129 @@
+#data<-circular(SoloDendritas$angleR)
+#cases<-SoloDendritas$ID==CentrosNeur$ID[i] & SoloDendritas$segment_length<10
+#cases2<-list(SoloDendritas$orientacion,SoloDendritas$Dist_centro)
+#distsegmentos<-0.5 #0.25 #Distancia entre las q dividir los segmentos
+#vectorrepet<-(ceiling((SoloDendritas$segment_length)*(1/distsegmentos))/(1/distsegmentos))/distsegmentos #Vector con el numero de segmentos que dividen el segmento original
+#distradios<-25 #Distancia entre las q dividir las distancias al centro de los puntos
+#Neurona<-CentrosNeur$ID[i]
+#Colores<-c("blue","blueviolet","darkgreen","darkorange")
+#EtiquetasAreasCerebro<-c("Posterior","Anterior","Ventral","Dorsal")
+#AreasCerebro<-c("P","A","V","D")
+
+
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/GraphicFunctions.R|12|0")) browser()};PointsCirclesGraph <- function(data,distsegmentos,vectorrepet,cases,cases2,Colores,AreasCerebro,EtiquetasAreasCerebro,Neurona,lengths=TRUE){
+#Esta funci�n realiza una representaci�n de la neurona mediante una circunferencia.
+#data<-vector de datos, de tipo circular que vamos a tratar
+#cases<-subcasos a reprentar
+#cases2<-lista con las subvariables para realizar el filtrado por areas
+#distsegmentos<-Distancia entre las q dividir los segmentos
+#vectorrepet<-Vector con el numero de segmentos que dividen el segmento original
+#Colores<-vector de colores para las diferentes areas
+#EtiquetasAreasCerebro<-c("Posterior","Anterior","Ventral","Dorsal")
+#AreasCerebro<-c("P","A","V","D") tal y como esten en el vector de datos
+#Neurona<- El nombr de la neurona q estamos tratando
+#lengths<-TRUE/FALSE que nos indica si queremos represetaci�n por distancias o por puntos
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/GraphicFunctions.R|24|0")) browser()};	if (lengths==FALSE){
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/GraphicFunctions.R|25|0")) browser()};		plot(data[cases],shrink=1.25,main=paste0("Points: ",Neurona),xlab="",ylab="",col="white")#representamos densidad simulada en circunf
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/GraphicFunctions.R|26|0")) browser()};		for (o in 1:4){
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/GraphicFunctions.R|27|0")) browser()};			points(data[cases & cases2[[1]]==AreasCerebro[o]],pch=16,cex=0.1,bin=360,stack=TRUE,sep=0.035,shrink=1.6,col=Colores[o]) #a�adimos los puntos reales
+		}	
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/GraphicFunctions.R|29|0")) browser()};		ticks.circular(circular(seq(0,11*pi/6,pi/6)),zero=pi/2,rotation='clock', tcl=0.075)
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/GraphicFunctions.R|30|0")) browser()};		points(mean(data[cases]),pch=4,cex=1,bin=360,stack=TRUE,sep=0.1,shrink=1.6,col="black",lwd=4)		
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/GraphicFunctions.R|31|0")) browser()};		arrows.circular(mean(data[cases]),col="darkblue",lwd=2,shrink=0.9)
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/GraphicFunctions.R|32|0")) browser()};		legend("topright",EtiquetasAreasCerebro,fill=Colores,box.col = "transparent",ncol=1,text.width=0.4,x.intersp=0.2,cex=1.2)
+	}else{
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/GraphicFunctions.R|34|0")) browser()};		repres<-circular(rep(data[cases],vectorrepet[cases]))
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/GraphicFunctions.R|35|0")) browser()};		plot(circular(1),tcl.text=0.3,shrink=1.3,main=paste0("Case ",Neurona),sub=paste0("Length represented by ",distsegmentos),xlab="",ylab="",col="white")#representamos densidad simulada en circunf
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/GraphicFunctions.R|36|0")) browser()};		draw.circle(x=0,y=0,radius=1)
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/GraphicFunctions.R|37|0")) browser()};		for (o in 1:4){
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/GraphicFunctions.R|38|0")) browser()};			repres2<-circular(rep(data[cases & cases2[[1]]==AreasCerebro[o]],vectorrepet[cases & cases2[[1]]==AreasCerebro[o]]))
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/GraphicFunctions.R|39|0")) browser()};			points(repres2,pch=16,cex=0.1,bin=360,stack=TRUE,sep=0.035,shrink=1.6,col=Colores[o]) #a�adimos los puntos reales
+		}	
+	#representamos las partes del boxplot
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/GraphicFunctions.R|42|0")) browser()};		lengths<-0.9
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/GraphicFunctions.R|43|0")) browser()};		byvalue=0.001
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/GraphicFunctions.R|44|0")) browser()};		cuart<-quantile.circular(circular(repres,units="radians"),probs = c(0.25,0.75))
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/GraphicFunctions.R|45|0")) browser()};		if(cuart[[1]]<cuart[[2]]){angseq <- seq(cuart[[1]],cuart[[2]],byvalue)
+		}else{angseq <- seq(cuart[[1]],2*pi,byvalue);angseq <- c(angseq,seq(0,cuart[[2]],byvalue))}
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/GraphicFunctions.R|47|0")) browser()};		lines(x=lengths*cos(angseq), y=lengths*sin(angseq), col="yellowgreen", lwd=4,lty=1)
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/GraphicFunctions.R|48|0")) browser()};		points(circular(c(cuart[[1]],cuart[[2]])),cex=2,bin=360,stack=FALSE,sep=0.1,shrink=1.6,col="yellowgreen",lwd=4,next.points=-0.065)
+	#a�adimos informaci�n de inter�s al plot	
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/GraphicFunctions.R|50|0")) browser()};		ticks.circular(circular(seq(0,11*pi/6,pi/6)),zero=pi/2,rotation='clock', tcl=0.075)
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/GraphicFunctions.R|51|0")) browser()};		points(mean(repres),pch=4,cex=1,bin=360,stack=FALSE,sep=0.1,shrink=1.6,col="darkblue",lwd=4,next.points=-0.065) 
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/GraphicFunctions.R|52|0")) browser()};		points(median(repres),pch=4,cex=1,bin=360,stack=FALSE,sep=0.1,shrink=1.6,col="red",lwd=4,next.points=-0.065) 
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/GraphicFunctions.R|53|0")) browser()};		arrows.circular(mean(repres),col="darkblue",lwd=2,shrink=0.85)
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/GraphicFunctions.R|54|0")) browser()};		arrows.circular(median.circular(repres),col="red",lwd=2,shrink=0.85)
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/GraphicFunctions.R|55|0")) browser()};		legend("topright",c(EtiquetasAreasCerebro,"Mean","Median","IQR"),fill=c(Colores,"darkblue","red","yellowgreen"),box.col = "transparent",ncol=1,text.width=0.4,x.intersp=0.2,cex=1.2)
+		#legend("left",c("Mean","Median","IQR"),fill=c("darkblue","red","yellowgreen"),pch=1,box.col = "transparent",ncol=1,text.width=0.4,x.intersp=0.2,cex=1.2)
+	}
+}
+
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/GraphicFunctions.R|60|0")) browser()};ConcentricCirclesGraph <- function(data,distsegmentos,vectorrepet,cases,cases2,distradios,Colores,AreasCerebro,EtiquetasAreasCerebro,Neurona){
+#Esta funci�n realiza una representaci�n de la neurona mediante c�rculos conc�ntricos.
+#data<-vector de datos, de tipo circular que vamos a tratar
+#cases<-subcasos a reprentar
+#cases2<-lista con las subvariables para realizar el filtrado por areas
+#distsegmentos<-Distancia entre las q dividir los segmentos
+#vectorrepet<-Vector con el numero de segmentos que dividen el segmento original
+#distradios<-Distancia entre las q dividir las distancias al centro de los puntos
+#Colores<-vector de colores para las diferentes areas
+#EtiquetasAreasCerebro<-c("Posterior","Anterior","Ventral","Dorsal")
+#AreasCerebro<-c("P","A","V","D") tal y como esten en el vector de datos
+
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/GraphicFunctions.R|72|0")) browser()};	repres<-circular(rep(data[cases],vectorrepet[cases]))
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/GraphicFunctions.R|73|0")) browser()};	distmarg<-seq(0,ceiling(max(SoloDendritas$Dist_centro[cases]*1/distradios))*distradios,by=distradios)
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/GraphicFunctions.R|74|0")) browser()};	nextpoint<-(-0.3)
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/GraphicFunctions.R|75|0")) browser()};	plot.circular(1,shrink=3,tcl.text=0.4,cex=0.7,main=paste0("Case ",Neurona),sub=paste0("Dist= ",distsegmentos,", Circ space= ",distradios),xlab="",ylab="",col="white",tcl=0.075)#representamos densidad simulada en circunf
+	#representamos las partes del boxplot
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/GraphicFunctions.R|77|0")) browser()};	lengths<-0.9
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/GraphicFunctions.R|78|0")) browser()};	cuart<-quantile.circular(circular(repres,units="radians"),probs = c(0.25,0.75))
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/GraphicFunctions.R|79|0")) browser()};	byvalue=0.001
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/GraphicFunctions.R|80|0")) browser()};	if(cuart[[1]]<cuart[[2]]){angseq <- seq(cuart[[1]],cuart[[2]],byvalue)
+		}else{angseq <- seq(cuart[[1]],2*pi,byvalue);angseq <- c(angseq,seq(0,cuart[[2]],byvalue))}
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/GraphicFunctions.R|82|0")) browser()};	lines(x=lengths*cos(angseq), y=lengths*sin(angseq), col="yellowgreen", lwd=2,lty=1)
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/GraphicFunctions.R|83|0")) browser()};	points(circular(c(cuart[[1]],cuart[[2]])),cex=1,bin=360,stack=FALSE,sep=0.1,shrink=1.6,col="yellowgreen",lwd=2,next.points=-0.065)
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/GraphicFunctions.R|84|0")) browser()};	ticks.circular(circular(seq(0,11*pi/6,pi/6)),zero=pi/2,rotation='clock', tcl=0.075)
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/GraphicFunctions.R|85|0")) browser()};	points(mean(repres),pch=4,cex=1,bin=360,stack=FALSE,sep=0.1,shrink=1.6,col="darkblue",lwd=2,next.points=-0.065) 
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/GraphicFunctions.R|86|0")) browser()};	points(median(repres),pch=4,cex=1,bin=360,stack=FALSE,sep=0.1,shrink=1.6,col="red",lwd=2,next.points=-0.065) 
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/GraphicFunctions.R|87|0")) browser()};	arrows.circular(mean(repres),col="darkblue",lwd=2,shrink=0.85)
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/GraphicFunctions.R|88|0")) browser()};	arrows.circular(median.circular(repres),col="red",lwd=2,shrink=0.85)
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/GraphicFunctions.R|89|0")) browser()};	for (l in 2:length(distmarg)){
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/GraphicFunctions.R|90|0")) browser()};		nextpoint<-nextpoint+0.3 #la primera iteracion debe sumar 0
+		#dibujar circunferencia en nextpoint
+		#cir<-circular(seq(1,360,by=0.01),unit="degrees")
+		#points(cir,lwd=4,pch=18,cex=0.1,bin=360,stack=FALSE,sep=0.035,shrink=1,col="black",next.points=nextpoint) #a�adimos los puntos reales
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/GraphicFunctions.R|94|0")) browser()};		draw.circle(x=0,y=0,radius=nextpoint+1)
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/GraphicFunctions.R|95|0")) browser()};		for (o in 1:4){
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/GraphicFunctions.R|96|0")) browser()};			nextpoint2<-nextpoint
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/GraphicFunctions.R|97|0")) browser()};			cast2<-cases & cases2[[1]]==AreasCerebro[o] & cases2[[2]]<distmarg[l] & cases2[[2]]>distmarg[l-1]
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/GraphicFunctions.R|98|0")) browser()};			repetit<-vectorrepet[cast2]
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/GraphicFunctions.R|99|0")) browser()};			repres2<-circular(rep(data[cast2], repetit))	
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/GraphicFunctions.R|100|0")) browser()};			if (length(repetit)>0){
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/GraphicFunctions.R|101|0")) browser()};				for (p in 1:max(repetit)){
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/GraphicFunctions.R|102|0")) browser()};					points(repres2,pch=16,cex=0.1,bin=360,stack=FALSE,sep=0.035,shrink=1,col=Colores[o],next.points=nextpoint2) #a�adimos los puntos reales
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/GraphicFunctions.R|103|0")) browser()};					nextpoint2<-nextpoint2+0.01
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/GraphicFunctions.R|104|0")) browser()};					elim<-match(unique(repres2),repres2)
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/GraphicFunctions.R|105|0")) browser()};					repres2<-repres2[-elim]
+				}
+			}
+		}
+	}
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/GraphicFunctions.R|110|0")) browser()};	legend("topright",c(EtiquetasAreasCerebro,"Mean","Median","IQR"),fill=c(Colores,"darkblue","red","yellowgreen"),box.col = "transparent",ncol=1,text.width=1,x.intersp=0.2,cex=1.2)
+}
+
+##Ejemplo de uso: 
+#i=1
+#data<-circular(SoloDendritas$angleR)
+#cases<-SoloDendritas$ID==CentrosNeur$ID[i] & SoloDendritas$angleR<10
+#cases2<-list(SoloDendritas$orientacion,SoloDendritas$Dist_centro)
+#distsegmentos<-0.5 #0.25 #Distancia entre las q dividir los segmentos
+#vectorrepet<-(ceiling((SoloDendritas$segment_length)*(1/distsegmentos))/(1/distsegmentos))/distsegmentos #Vector con el numero de segmentos que dividen el segmento original
+#distradios<-25 #Distancia entre las q dividir las distancias al centro de los puntos
+#Colores<-c("blue","blueviolet","darkgreen","darkorange")
+#EtiquetasAreasCerebro<-c("Posterior","Anterior","Ventral","Dorsal")
+#AreasCerebro<-c("P","A","V","D")
+#lengths=FALSE
+#
+#ConcentricCirclesGraph(data,distsegmentos,vectorrepet,cases,cases2,distradios,Colores,AreasCerebro,EtiquetasAreasCerebro)
+#x11()
+#PointsCirclesGraph(data,distsegmentos,vectorrepet,cases,cases2,Colores,AreasCerebro,EtiquetasAreasCerebro,lengths)

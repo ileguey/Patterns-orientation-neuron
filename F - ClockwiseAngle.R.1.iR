@@ -1,0 +1,109 @@
+
+#Para calcular angulo entre vectores (primero alternativa en 2d)
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/F - ClockwiseAngle.R|2|0")) browser()};angularMeasures2d <- function(vector,axis)
+{
+ #vector tendra 2 elementos x e y, as� como axis (de la forma c(1,2))
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/F - ClockwiseAngle.R|5|0")) browser()};dot<-axis[1]*vector[1]+axis[2]*vector[2]
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/F - ClockwiseAngle.R|6|0")) browser()};det<-axis[1]*vector[2]-vector[1]*axis[2]
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/F - ClockwiseAngle.R|7|0")) browser()};angle<-atan2(det,dot)
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/F - ClockwiseAngle.R|8|0")) browser()};if (angle<0){angle<-angle+(2*pi)}
+#angle<-(angle+(2*pi))%% (2*pi)
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/F - ClockwiseAngle.R|10|0")) browser()};return(angle*180/pi)
+}
+
+###
+# Para calcular angulo entre vectores con matrices
+### el original
+#angularMeasures2 <- function(vector,axis,inclination.axis = c(0,0,1) )
+#{
+  #if(is.vector(vector))
+  #{
+    #azimuth <- (atan2(axis[1]*vector[2] - axis[2]*vector[1], t(axis)%*%vector) + 2*pi) %% (2*pi)
+    #inclination <- pi/2 - atan2(vector[1]*inclination.axis[3] - vector[3]*inclination.axis[1], t(vector)%*%inclination.axis) %% (pi)
+    #return(c(azimuth,inclination))
+  #}
+  #else
+  #{
+    #azimuth <- (atan2(axis[,1]*vector[,2] - axis[,2]*vector[,1],
+                      #rowMeans(axis*vector)*3)
+                #+ 2*pi) %% (2*pi)
+    #aux_inc <- matrix(rep(inclination.axis,nrow(vector)),nrow=nrow(vector),byrow=T)
+    #inclination <- pi/2 - atan2(vector[,1]*aux_inc[,3] - vector[,3]*aux_inc[,1],
+                                #rowMeans(vector * aux_inc) *3) %% (pi)
+    #return(list(azimuth=azimuth,inclination=inclination))
+  #}
+#}
+
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/F - ClockwiseAngle.R|36|0")) browser()};angularMeasures2 <- function(vector,axis)
+{
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/F - ClockwiseAngle.R|38|0")) browser()};  if(is.vector(vector))
+  {
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/F - ClockwiseAngle.R|40|0")) browser()};	dot<-axis[1]*vector[1]+axis[2]*vector[2]
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/F - ClockwiseAngle.R|41|0")) browser()};	det<-axis[1]*vector[2]-vector[1]*axis[2]
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/F - ClockwiseAngle.R|42|0")) browser()};    azimuth <- atan2(det, dot)
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/F - ClockwiseAngle.R|43|0")) browser()};	if (azimuth<0){azimuth<-azimuth+(2*pi)}
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/F - ClockwiseAngle.R|44|0")) browser()};    return(c(azimuth))
+  }
+  else
+  {
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/F - ClockwiseAngle.R|48|0")) browser()};	dot<-axis[,1]*vector[,1]+axis[,2]*vector[,2]
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/F - ClockwiseAngle.R|49|0")) browser()};	det<-axis[,1]*vector[,2]-vector[,1]*axis[,2]
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/F - ClockwiseAngle.R|50|0")) browser()};    azimuth <- atan2(det,dot)
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/F - ClockwiseAngle.R|51|0")) browser()};	angle<-lapply(azimuth,function(x) {if (x<0){x<-x+(2*pi)}else{x<-x}})
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/F - ClockwiseAngle.R|52|0")) browser()};    return(list(azimuth=angle))
+  }
+}
+
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/F - ClockwiseAngle.R|56|0")) browser()};bisectriz_punto<- function (px1,py1,px2,py2,x1,y1,ID){
+	#Puntos medio de los extremos
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/F - ClockwiseAngle.R|58|0")) browser()};	x2<-(px1+px2)/2;y2<-(py1+py2)/2
+	#Sacamos la recta Y=mX+d � mX-Y+d=0 que pasa por el centro y el punto medio
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/F - ClockwiseAngle.R|60|0")) browser()};	m<-(y2-y1)/(x2-x1)
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/F - ClockwiseAngle.R|61|0")) browser()};	d<-(-x1*(y2-y1)/(x2-x1))+y1
+	#Medimos distancias a la recta
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/F - ClockwiseAngle.R|63|0")) browser()};	if (px1==min(ContornoAreas[ContornoAreas$ID==ID,c("xPosterior","xAnterior","xDorsal","xVentral")])){#<-
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/F - ClockwiseAngle.R|64|0")) browser()};		if (py2==min(ContornoAreas[ContornoAreas$ID==ID,c("yPosterior","yAnterior","yDorsal","yVentral")])){ #sur
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/F - ClockwiseAngle.R|65|0")) browser()};		 	Puntos<-Contorno[Contorno$ID==ID & (Contorno$x<px2 & Contorno$y<py1),]
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/F - ClockwiseAngle.R|66|0")) browser()};			represent<-paste0("lim izq 2")#variable de px2)
+		}else{
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/F - ClockwiseAngle.R|68|0")) browser()};		 	Puntos<-Contorno[Contorno$ID==ID & (Contorno$x<px2 & Contorno$y>py1),]
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/F - ClockwiseAngle.R|69|0")) browser()};			represent<-paste0("lim izq 1")#variable de py1)
+		}	
+	}	
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/F - ClockwiseAngle.R|72|0")) browser()};	if (px1==max(ContornoAreas[ContornoAreas$ID==ID,c("xPosterior","xAnterior","xDorsal","xVentral")])){#->
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/F - ClockwiseAngle.R|73|0")) browser()};		if (py2==min(ContornoAreas[ContornoAreas$ID==ID,c("yPosterior","yAnterior","yDorsal","yVentral")])){ #sur
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/F - ClockwiseAngle.R|74|0")) browser()};		 	Puntos<-Contorno[Contorno$ID==ID & (Contorno$x>px2 & Contorno$y<py1),]
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/F - ClockwiseAngle.R|75|0")) browser()};			represent<-paste0("lim izq 1")#variable de py1)
+		}else{
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/F - ClockwiseAngle.R|77|0")) browser()};		 	Puntos<-Contorno[Contorno$ID==ID & (Contorno$x>px2 & Contorno$y>py1),]
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/F - ClockwiseAngle.R|78|0")) browser()};			represent<-paste0("lim izq 2")#variable de px2)
+		}	
+	}
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/F - ClockwiseAngle.R|81|0")) browser()};	if (py1==min(ContornoAreas[ContornoAreas$ID==ID,c("yPosterior","yAnterior","yDorsal","yVentral")])){# punto Sur
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/F - ClockwiseAngle.R|82|0")) browser()};		if (px2==min(ContornoAreas[ContornoAreas$ID==ID,c("xPosterior","xAnterior","xDorsal","xVentral")])){ #sur
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/F - ClockwiseAngle.R|83|0")) browser()};		 	Puntos<-Contorno[Contorno$ID==ID & (Contorno$x<px1 & Contorno$y<py2),]
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/F - ClockwiseAngle.R|84|0")) browser()};			represent<-paste0("lim izq 1")#variable de px1)
+		}else{
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/F - ClockwiseAngle.R|86|0")) browser()};		 	Puntos<-Contorno[Contorno$ID==ID & (Contorno$x>px1 & Contorno$y<py2),]
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/F - ClockwiseAngle.R|87|0")) browser()};			represent<-paste0("lim izq 2")#variable de py2)
+		}	
+	}
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/F - ClockwiseAngle.R|90|0")) browser()};	if (py1==max(ContornoAreas[ContornoAreas$ID==ID,c("yPosterior","yAnterior","yDorsal","yVentral")])){# punto Norte
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/F - ClockwiseAngle.R|91|0")) browser()};		if (px2==min(ContornoAreas[ContornoAreas$ID==ID,c("xPosterior","xAnterior","xDorsal","xVentral")])){ #sur
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/F - ClockwiseAngle.R|92|0")) browser()};		 	Puntos<-Contorno[Contorno$ID==ID & (Contorno$x<px1 & Contorno$y>py2),]
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/F - ClockwiseAngle.R|93|0")) browser()};			represent<-paste0("lim izq 2")#variable de py2)
+		}else{
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/F - ClockwiseAngle.R|95|0")) browser()};		 	Puntos<-Contorno[Contorno$ID==ID & (Contorno$x>px1 & Contorno$y>py2),]
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/F - ClockwiseAngle.R|96|0")) browser()};			represent<-paste0("lim izq 1")#variable de px1)
+		}	
+	}
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/F - ClockwiseAngle.R|99|0")) browser()};	if (ID=="5VaNA"){Puntos<-Contorno[Contorno$ID==ID & (Contorno$x<px1 & Contorno$y<py2),];represent<-paste0("lim izq 1")}
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/F - ClockwiseAngle.R|100|0")) browser()};	for (j in 1:nrow(Puntos)){
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/F - ClockwiseAngle.R|101|0")) browser()};		p1<-Puntos$x[j]
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/F - ClockwiseAngle.R|102|0")) browser()};		p2<-Puntos$y[j]
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/F - ClockwiseAngle.R|103|0")) browser()};		Puntos[j,"distP_Rect"]<-abs(m*p1+(-1)*p2+d)/sqrt(m^2+(-1)^2)
+	}
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/F - ClockwiseAngle.R|105|0")) browser()};	distP_Rectlim<-min(Puntos$distP_Rect)
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/F - ClockwiseAngle.R|106|0")) browser()};	plimx<-unique(Puntos$x[Puntos$distP_Rect==distP_Rectlim]);plimy<-unique(Puntos$y[Puntos$distP_Rect==distP_Rectlim])
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/F - ClockwiseAngle.R|107|0")) browser()};	return(list(plimx,plimy,distP_Rectlim,represent))
+}

@@ -1,0 +1,105 @@
+#Creamos la variable dist.anterior para calcular la longitud de cada dendrita
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/CalculoOrientacion.R|1|0")) browser()};for (i in 1:nrow(DataSinContour)){
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/CalculoOrientacion.R|2|0")) browser()};	if (is.na(DataSinContour[i,"parent"])){
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/CalculoOrientacion.R|3|0")) browser()};		DataSinContour[i,"DistParent"]<-0
+	}else{
+	    #Parent<-DataSinContour[DataSinContour$individual==DataSinContour[i,"individual"] & DataSinContour$layer==DataSinContour[i,"layer"] & DataSinContour$point_id==DataSinContour[i,"parent"],c()
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/CalculoOrientacion.R|6|0")) browser()};		DataSinContour[i,"DistParent"]<-sqrt(((DataSinContour[i,"x"]-DataSinContour[DataSinContour$individual==DataSinContour[i,"individual"] & DataSinContour$layer==DataSinContour[i,"layer"] & DataSinContour$point_id==DataSinContour[i,"parent"],"x"])^2)+((DataSinContour[i,"y"]-DataSinContour[DataSinContour$individual==DataSinContour[i,"individual"] & DataSinContour$layer==DataSinContour[i,"layer"] & DataSinContour$point_id==DataSinContour[i,"parent"],"y"])^2)+((DataSinContour[i,"z"]-DataSinContour[DataSinContour$individual==DataSinContour[i,"individual"] & DataSinContour$layer==DataSinContour[i,"layer"] & DataSinContour$point_id==DataSinContour[i,"parent"],"z"])^2))
+	}
+}
+
+#A�adimos la longitud total de cada dendrita
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/CalculoOrientacion.R|11|0")) browser()};for (i in 1:nrow(Solonodosraiz)){
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/CalculoOrientacion.R|12|0")) browser()};	Solonodosraiz[i,"dendrite_length"]<-sum(DataSinContour[DataSinContour$type=="dendrite" & DataSinContour$map_id==Solonodosraiz[i,"map_id"] & DataSinContour$cell_id==Solonodosraiz[i,"cell_id"] & DataSinContour$dendrite_id==Solonodosraiz[i,"dendrite_id"],"segment_length"])
+}
+
+#Comenzamos a unir cada l�mite del contorno con los centros de las neuronas
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/CalculoOrientacion.R|16|0")) browser()};for (i in 1:nrow(ContornoAreas)){
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/CalculoOrientacion.R|17|0")) browser()};	for (j in CentrosNeur[CentrosNeur$individual==ContornoAreas$individual[i] & CentrosNeur$layer==ContornoAreas$layer[i],"cell_id"]){
+		#Calculamos las pendientes (m) y terminos indep(d) de las rectas y+mx+d=0
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/CalculoOrientacion.R|19|0")) browser()};		centro_P<-param_recta(ContornoAreas$Px_lim_izq[i],ContornoAreas$Py_lim_izq[i],CentrosNeur[CentrosNeur$individual==ContornoAreas$individual[i] & CentrosNeur$layer==ContornoAreas$layer[i] & CentrosNeur$cell_id==j,"centerXroot"],CentrosNeur[CentrosNeur$individual==ContornoAreas$individual[i] & CentrosNeur$layer==ContornoAreas$layer[i] & CentrosNeur$cell_id==j,"centerYroot"])
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/CalculoOrientacion.R|20|0")) browser()};		centro_A<-param_recta(ContornoAreas$Ax_lim_izq[i],ContornoAreas$Ay_lim_izq[i],CentrosNeur[CentrosNeur$individual==ContornoAreas$individual[i] & CentrosNeur$layer==ContornoAreas$layer[i] & CentrosNeur$cell_id==j,"centerXroot"],CentrosNeur[CentrosNeur$individual==ContornoAreas$individual[i] & CentrosNeur$layer==ContornoAreas$layer[i] & CentrosNeur$cell_id==j,"centerYroot"])
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/CalculoOrientacion.R|21|0")) browser()};		centro_V<-param_recta(ContornoAreas$Vx_lim_izq[i],ContornoAreas$Vy_lim_izq[i],CentrosNeur[CentrosNeur$individual==ContornoAreas$individual[i] & CentrosNeur$layer==ContornoAreas$layer[i] & CentrosNeur$cell_id==j,"centerXroot"],CentrosNeur[CentrosNeur$individual==ContornoAreas$individual[i] & CentrosNeur$layer==ContornoAreas$layer[i] & CentrosNeur$cell_id==j,"centerYroot"])
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/CalculoOrientacion.R|22|0")) browser()};		centro_D<-param_recta(ContornoAreas$Dx_lim_izq[i],ContornoAreas$Dy_lim_izq[i],CentrosNeur[CentrosNeur$individual==ContornoAreas$individual[i] & CentrosNeur$layer==ContornoAreas$layer[i] & CentrosNeur$cell_id==j,"centerXroot"],CentrosNeur[CentrosNeur$individual==ContornoAreas$individual[i] & CentrosNeur$layer==ContornoAreas$layer[i] & CentrosNeur$cell_id==j,"centerYroot"])
+
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/CalculoOrientacion.R|24|0")) browser()};		CentrosNeur[CentrosNeur$individual==ContornoAreas$individual[i] & CentrosNeur$layer==ContornoAreas$layer[i] & CentrosNeur$cell_id==j,"mP"]<-centro_P$m
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/CalculoOrientacion.R|25|0")) browser()};		CentrosNeur[CentrosNeur$individual==ContornoAreas$individual[i] & CentrosNeur$layer==ContornoAreas$layer[i] & CentrosNeur$cell_id==j,"dP"]<-centro_P$d
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/CalculoOrientacion.R|26|0")) browser()};		CentrosNeur[CentrosNeur$individual==ContornoAreas$individual[i] & CentrosNeur$layer==ContornoAreas$layer[i] & CentrosNeur$cell_id==j,"mA"]<-centro_A$m
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/CalculoOrientacion.R|27|0")) browser()};		CentrosNeur[CentrosNeur$individual==ContornoAreas$individual[i] & CentrosNeur$layer==ContornoAreas$layer[i] & CentrosNeur$cell_id==j,"dA"]<-centro_A$d		
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/CalculoOrientacion.R|28|0")) browser()};		CentrosNeur[CentrosNeur$individual==ContornoAreas$individual[i] & CentrosNeur$layer==ContornoAreas$layer[i] & CentrosNeur$cell_id==j,"mD"]<-centro_D$m
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/CalculoOrientacion.R|29|0")) browser()};		CentrosNeur[CentrosNeur$individual==ContornoAreas$individual[i] & CentrosNeur$layer==ContornoAreas$layer[i] & CentrosNeur$cell_id==j,"dD"]<-centro_D$d
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/CalculoOrientacion.R|30|0")) browser()};		CentrosNeur[CentrosNeur$individual==ContornoAreas$individual[i] & CentrosNeur$layer==ContornoAreas$layer[i] & CentrosNeur$cell_id==j,"mV"]<-centro_V$m
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/CalculoOrientacion.R|31|0")) browser()};		CentrosNeur[CentrosNeur$individual==ContornoAreas$individual[i] & CentrosNeur$layer==ContornoAreas$layer[i] & CentrosNeur$cell_id==j,"dV"]<-centro_V$d
+	}
+}
+
+#Obtenemos angulo de las areas
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/CalculoOrientacion.R|36|0")) browser()};for (i in 1:nrow(CentrosNeur)){
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/CalculoOrientacion.R|37|0")) browser()};	CentrosNeur[i,"alphaP-D"]<-angularMeasures2d(vector=c(ContornoAreas$Dx_lim_izq[ContornoAreas$individual==CentrosNeur$individual[i] & ContornoAreas$layer==CentrosNeur$layer[i]]-CentrosNeur$centerXroot[i],ContornoAreas$Dy_lim_izq[ContornoAreas$individual==CentrosNeur$individual[i] & ContornoAreas$layer==CentrosNeur$layer[i]]-CentrosNeur$centerYroot[i],0),axis=c(ContornoAreas$Px_lim_izq[ContornoAreas$individual==CentrosNeur$individual[i] & ContornoAreas$layer==CentrosNeur$layer[i]]-CentrosNeur$centerXroot[i],ContornoAreas$Py_lim_izq[ContornoAreas$individual==CentrosNeur$individual[i] & ContornoAreas$layer==CentrosNeur$layer[i]]-CentrosNeur$centerYroot[i],0))
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/CalculoOrientacion.R|38|0")) browser()};	CentrosNeur[i,"alphaP-A"]<-angularMeasures2d(vector=c(ContornoAreas$Ax_lim_izq[ContornoAreas$individual==CentrosNeur$individual[i] & ContornoAreas$layer==CentrosNeur$layer[i]]-CentrosNeur$centerXroot[i],ContornoAreas$Ay_lim_izq[ContornoAreas$individual==CentrosNeur$individual[i] & ContornoAreas$layer==CentrosNeur$layer[i]]-CentrosNeur$centerYroot[i],0),axis=c(ContornoAreas$Px_lim_izq[ContornoAreas$individual==CentrosNeur$individual[i] & ContornoAreas$layer==CentrosNeur$layer[i]]-CentrosNeur$centerXroot[i],ContornoAreas$Py_lim_izq[ContornoAreas$individual==CentrosNeur$individual[i] & ContornoAreas$layer==CentrosNeur$layer[i]]-CentrosNeur$centerYroot[i],0))
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/CalculoOrientacion.R|39|0")) browser()};	CentrosNeur[i,"alphaP-V"]<-angularMeasures2d(vector=c(ContornoAreas$Vx_lim_izq[ContornoAreas$individual==CentrosNeur$individual[i] & ContornoAreas$layer==CentrosNeur$layer[i]]-CentrosNeur$centerXroot[i],ContornoAreas$Vy_lim_izq[ContornoAreas$individual==CentrosNeur$individual[i] & ContornoAreas$layer==CentrosNeur$layer[i]]-CentrosNeur$centerYroot[i],0),axis=c(ContornoAreas$Px_lim_izq[ContornoAreas$individual==CentrosNeur$individual[i] & ContornoAreas$layer==CentrosNeur$layer[i]]-CentrosNeur$centerXroot[i],ContornoAreas$Py_lim_izq[ContornoAreas$individual==CentrosNeur$individual[i] & ContornoAreas$layer==CentrosNeur$layer[i]]-CentrosNeur$centerYroot[i],0))
+}
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/CalculoOrientacion.R|41|0")) browser()};n <- nrow(DataSinContour)
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/CalculoOrientacion.R|42|0")) browser()};tabaux<-merge(DataSinContour,CentrosNeur,by="ID")
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/CalculoOrientacion.R|43|0")) browser()};tabaux2<-merge(DataSinContour,ContornoAreas,by=c("individual","layer"))
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/CalculoOrientacion.R|44|0")) browser()};tabaux<-tabaux[order(tabaux$individual.x,tabaux$layer.x,tabaux$cell_id.x),]
+#View(`tabaux`)
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/CalculoOrientacion.R|46|0")) browser()};tabaux2<-tabaux2[order(tabaux2$individual,tabaux2$layer,tabaux2$cell_id),]
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/CalculoOrientacion.R|47|0")) browser()};distcentr<-sqrt(((tabaux$x-tabaux$centerXroot)^2)+((tabaux$y-tabaux$centerYroot)^2))
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/CalculoOrientacion.R|48|0")) browser()};aux_az <-as.numeric(angularMeasures2(vector=matrix(c(tabaux$x-tabaux$centerXroot, tabaux$y-tabaux$centerYroot, rep(0,n)) ,nrow=n,ncol=3),
+									 axis=matrix(c(tabaux2$Px_lim_izq-tabaux$centerXroot,tabaux2$Py_lim_izq-tabaux$centerYroot,rep(0,n)),ncol=3,nrow=n)
+									)$azimuth)
+												
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/CalculoOrientacion.R|52|0")) browser()};aux_alpha <- cbind(tabaux[,c("alphaP-D","alphaP-A","alphaP-V")],aux_az*180/pi)
+#View(`aux_alpha`)
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/CalculoOrientacion.R|54|0")) browser()};  orientacion <- apply(aux_alpha,1,function(x){
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/CalculoOrientacion.R|55|0")) browser()};    if (x[4]<=min(x[1:3])){
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/CalculoOrientacion.R|56|0")) browser()};      return("P")
+    }else if (x[4]>max(x[1:3])){
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/CalculoOrientacion.R|58|0")) browser()};      if (max(x[1:3])==x[3]){
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/CalculoOrientacion.R|59|0")) browser()};        return("V")
+      }else{
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/CalculoOrientacion.R|61|0")) browser()};        return("D")
+      }
+    }else if (x[4]>x[2]){
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/CalculoOrientacion.R|64|0")) browser()};      return("A")
+    }else{
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/CalculoOrientacion.R|66|0")) browser()};      if (max(x[1:3])==x[3]){
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/CalculoOrientacion.R|67|0")) browser()};        return("D")
+      }else{
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/CalculoOrientacion.R|69|0")) browser()};        return("V")
+      }
+    }
+  })
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/CalculoOrientacion.R|73|0")) browser()};DataSinContour<-cbind(DataSinContour,distcentr)
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/CalculoOrientacion.R|74|0")) browser()};DataSinContour<-rename(DataSinContour,c(distcentr="Dist_centro"))
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/CalculoOrientacion.R|75|0")) browser()};DataSinContour<-cbind(DataSinContour,aux_az,orientacion)
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/CalculoOrientacion.R|76|0")) browser()};DataSinContour<-rename(DataSinContour,c(aux_az="angleR"))
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/CalculoOrientacion.R|77|0")) browser()};DataSinContour[,"angleGrad"]<-DataSinContour$angleR*180/pi
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/CalculoOrientacion.R|78|0")) browser()};CentrosNeur<-na.omit(CentrosNeur)
+#Situamos las longitudes de cada area
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/CalculoOrientacion.R|80|0")) browser()};for (i in 1:nrow(na.omit(CentrosNeur))){
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/CalculoOrientacion.R|81|0")) browser()};	print(i)
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/CalculoOrientacion.R|82|0")) browser()};	CentrosNeur[i,"total_dendrites_length"]<-sum(DataSinContour$segment_length[DataSinContour$ID==CentrosNeur$ID[i] & DataSinContour$type=="dendrite" & DataSinContour$cell_id==CentrosNeur$cell_id[i]])
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/CalculoOrientacion.R|83|0")) browser()};	CentrosNeur[i,"P"]<-sum(DataSinContour$segment_length[DataSinContour$ID==CentrosNeur$ID[i] & DataSinContour$type=="dendrite" & DataSinContour$cell_id==CentrosNeur$cell_id[i] & DataSinContour$orientacion=="P"])
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/CalculoOrientacion.R|84|0")) browser()};	CentrosNeur[i,"V"]<-sum(DataSinContour$segment_length[DataSinContour$ID==CentrosNeur$ID[i] & DataSinContour$type=="dendrite" & DataSinContour$orientacion=="V"])
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/CalculoOrientacion.R|85|0")) browser()};	CentrosNeur[i,"A"]<-sum(DataSinContour$segment_length[DataSinContour$ID==CentrosNeur$ID[i] & DataSinContour$type=="dendrite" & DataSinContour$orientacion=="A"])
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/CalculoOrientacion.R|86|0")) browser()};	CentrosNeur[i,"D"]<-sum(DataSinContour$segment_length[DataSinContour$ID==CentrosNeur$ID[i] & DataSinContour$type=="dendrite" & DataSinContour$orientacion=="D"])
+}
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/CalculoOrientacion.R|88|0")) browser()};CentrosNeur[,"%P"]<-CentrosNeur[,"P"]/CentrosNeur[,"total_dendrites_length"]
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/CalculoOrientacion.R|89|0")) browser()};CentrosNeur[,"%V"]<-CentrosNeur[,"V"]/CentrosNeur[,"total_dendrites_length"]
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/CalculoOrientacion.R|90|0")) browser()};CentrosNeur[,"%A"]<-CentrosNeur[,"A"]/CentrosNeur[,"total_dendrites_length"]
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/CalculoOrientacion.R|91|0")) browser()};CentrosNeur[,"%D"]<-CentrosNeur[,"D"]/CentrosNeur[,"total_dendrites_length"]
+	
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/CalculoOrientacion.R|93|0")) browser()};for (i in 1:nrow(ContornoAreas)){
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/CalculoOrientacion.R|94|0")) browser()};	print(i)
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/CalculoOrientacion.R|95|0")) browser()};	ContornoAreas[i,"total_neurons_length"]<-sum(DataSinContour$segment_length[DataSinContour$map_id==ContornoAreas$map_id[i] & DataSinContour$type=="dendrite"])
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/CalculoOrientacion.R|96|0")) browser()};	ContornoAreas[i,"P"]<-sum(DataSinContour$segment_length[DataSinContour$map_id==ContornoAreas$map_id[i] & DataSinContour$type=="dendrite" & DataSinContour$orientacion=="P"])
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/CalculoOrientacion.R|97|0")) browser()};	ContornoAreas[i,"V"]<-sum(DataSinContour$segment_length[DataSinContour$map_id==ContornoAreas$map_id[i] & DataSinContour$type=="dendrite" & DataSinContour$orientacion=="V"])
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/CalculoOrientacion.R|98|0")) browser()};	ContornoAreas[i,"A"]<-sum(DataSinContour$segment_length[DataSinContour$map_id==ContornoAreas$map_id[i] & DataSinContour$type=="dendrite" & DataSinContour$orientacion=="A"])
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/CalculoOrientacion.R|99|0")) browser()};	ContornoAreas[i,"D"]<-sum(DataSinContour$segment_length[DataSinContour$map_id==ContornoAreas$map_id[i] & DataSinContour$type=="dendrite" & DataSinContour$orientacion=="D"])
+}
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/CalculoOrientacion.R|101|0")) browser()};ContornoAreas[,"%P"]<-ContornoAreas[,"P"]/ContornoAreas[,"total_neurons_length"]
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/CalculoOrientacion.R|102|0")) browser()};ContornoAreas[,"%V"]<-ContornoAreas[,"V"]/ContornoAreas[,"total_neurons_length"]
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/CalculoOrientacion.R|103|0")) browser()};ContornoAreas[,"%A"]<-ContornoAreas[,"A"]/ContornoAreas[,"total_neurons_length"]
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/CalculoOrientacion.R|104|0")) browser()};ContornoAreas[,"%D"]<-ContornoAreas[,"D"]/ContornoAreas[,"total_neurons_length"]

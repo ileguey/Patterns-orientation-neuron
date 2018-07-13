@@ -1,0 +1,29 @@
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/Gráficos3D.R|0|0")) browser()};col<-rainbow(n=max(DataSinContour[DataSinContour$type=="dendrite","dendrite_id"]))
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/Gráficos3D.R|1|0")) browser()};rgl.points(1,11,1)
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/Gráficos3D.R|2|0")) browser()};for (i in ratas){
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/Gráficos3D.R|3|0")) browser()};	for (j in unique(DataSinContour[DataSinContour$individual==i,"layer"])){
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/Gráficos3D.R|4|0")) browser()};		for (k in unique(DataSinContour[DataSinContour$individual==i & DataSinContour$layer==j,"cell_id"])){
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/Gráficos3D.R|5|0")) browser()};			rgl.close()
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/Gráficos3D.R|6|0")) browser()};			for (w in unique(DataSinContour[DataSinContour$type=="dendrite" & DataSinContour$individual==i & DataSinContour$layer==j & DataSinContour$cell_id==k,"dendrite_id"])){
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/Gráficos3D.R|7|0")) browser()};				Reg1<-RectaRegDen(DataSinContour,CentrosNeur,i,j,k,w,col[w])
+				#Reg1 es tipo list donde: [1] puntos x [2] puntos y [3] puntos z [4] colores [5]coef x recta [6]coef y recta[7] coef z recta [8],[9],[10] parametro  alfa beta gamma respectivamente de la recta, partiendo de 0,0,0 en nodo raiz
+				#Guardamos las regresiones en el data de nodos raiz
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/Gráficos3D.R|10|0")) browser()};				Solonodosraiz[Solonodosraiz$individual==i & Solonodosraiz$layer==j & Solonodosraiz$cell_id==k & Solonodosraiz$dendrite_id==w,"alfa.recta"]<-Reg1[[8]]
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/Gráficos3D.R|11|0")) browser()};				Solonodosraiz[Solonodosraiz$individual==i & Solonodosraiz$layer==j & Solonodosraiz$cell_id==k & Solonodosraiz$dendrite_id==w,"beta.recta"]<-Reg1[[9]]
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/Gráficos3D.R|12|0")) browser()};				Solonodosraiz[Solonodosraiz$individual==i & Solonodosraiz$layer==j & Solonodosraiz$cell_id==k & Solonodosraiz$dendrite_id==w,"gamma.recta"]<-Reg1[[10]]				
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/Gráficos3D.R|13|0")) browser()};				if (w==min(unique(DataSinContour[DataSinContour$type=="dendrite" & DataSinContour$individual==i & DataSinContour$layer==j & DataSinContour$cell_id==k,"dendrite_id"]))){
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/Gráficos3D.R|14|0")) browser()};					rgl.points(x=Reg1[[1]],y=Reg1[[2]],z=Reg1[[3]],col=Reg1[[4]])
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/Gráficos3D.R|15|0")) browser()};					par3d(windowRect=c(0,22,1920,1060)) #Para que se vea grande
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/Gráficos3D.R|16|0")) browser()};					segments3d(c(0,Reg1[[5]]),c(0,Reg1[[6]]),c(0,Reg1[[7]]),col="green") #la recta se traza por coordenadas (x,y,z) a pares
+					#axes3d() #Que dibuje los ejes
+					#title3d(main=paste0("Rata",i,"Capa",j,"Neurona",k,""),xlab="x",ylab="y",zlab="z") #Que introduzca titulos
+				}else{
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/Gráficos3D.R|20|0")) browser()};					rgl.points(x=Reg1[[1]],y=Reg1[[2]],z=Reg1[[3]],col=Reg1[[4]])
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/Gráficos3D.R|21|0")) browser()};					segments3d(c(0,Reg1[[5]]),c(0,Reg1[[6]]),c(0,Reg1[[7]]),col="green") #la recta se traza por coordenadas (x,y,z) a pares
+				}
+			}
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/Gráficos3D.R|24|0")) browser()};			title3d(main=paste0("Rata",i,"Capa",j,"Neurona",k,"")) #Que introduzca titulos
+{if (.Revo.tb("C:/Users/Ileguey/Documents/Revolution/Art3Orientation/Gráficos3D.R|25|0")) browser()};			Sys.sleep(3)
+		}
+	}
+}

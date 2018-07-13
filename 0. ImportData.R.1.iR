@@ -1,0 +1,82 @@
+		###### C�DIGO DE PREPARACI�N DE LAS TABLAS PARA EL C�LCULO DE LA ORIENTACI�N DE NEURONAS ######
+
+#TodosMapas<-read.table(file="C://Users//Ileguey//Documents//Revolution//Art3Orientation//tablas//all_rats.csv",header=TRUE,sep="")
+{if (.Revo.tb("C:/Users/Laura/Documents/Revolution/Art3Orientation/0. ImportData.R|3|0")) browser()};TodosMapas<-read.table(file="C://Users//Ileguey//Documents//Revolution//Art3Orientation//tablas//all_rats_conIV.csv",header=TRUE,sep="")
+# para trabajar con cualquier ruta poner getwd(), y el .// noslleva a esa ruta cuando cargamos
+#Creamos variable ID
+{if (.Revo.tb("C:/Users/Laura/Documents/Revolution/Art3Orientation/0. ImportData.R|6|0")) browser()};TodosMapas <- cbind(TodosMapas,paste0(TodosMapas[,"individual"],TodosMapas[,"layer"],TodosMapas[,"cell_id"]))
+{if (.Revo.tb("C:/Users/Laura/Documents/Revolution/Art3Orientation/0. ImportData.R|7|0")) browser()};names(TodosMapas)[ncol(TodosMapas)]<-"ID"
+{if (.Revo.tb("C:/Users/Laura/Documents/Revolution/Art3Orientation/0. ImportData.R|8|0")) browser()};TodosMapas<-transform(TodosMapas, branch_id = as.character(branch_id))
+{if (.Revo.tb("C:/Users/Laura/Documents/Revolution/Art3Orientation/0. ImportData.R|9|0")) browser()};TodosMapas$w<-NULL;TodosMapas$color<-NULL;TodosMapas[is.na(TodosMapas$parent) & TodosMapas$type=="dendrite","branch_id"]<-"ORoot"
+#Creamos archivo de contorno
+{if (.Revo.tb("C:/Users/Laura/Documents/Revolution/Art3Orientation/0. ImportData.R|11|0")) browser()};Contorno<-TodosMapas[TodosMapas$type=="contour",]
+#View(`CentrosNeur`)
+{if (.Revo.tb("C:/Users/Laura/Documents/Revolution/Art3Orientation/0. ImportData.R|13|0")) browser()};order.indiv<-order(Contorno$individual)
+{if (.Revo.tb("C:/Users/Laura/Documents/Revolution/Art3Orientation/0. ImportData.R|14|0")) browser()};Contorno<-Contorno[order.indiv,] #Ordenamos el contorno
+#Creamos archivo con resto de individuos
+{if (.Revo.tb("C:/Users/Laura/Documents/Revolution/Art3Orientation/0. ImportData.R|16|0")) browser()};DataSinContour<-TodosMapas[TodosMapas$type!="contour",]
+
+#View(`TodosMapas`)
+#View(`Contorno`)
+#View(`DataSinContour`)
+
+#Archivo con los p.raiz de cada neurona:
+{if (.Revo.tb("C:/Users/Laura/Documents/Revolution/Art3Orientation/0. ImportData.R|23|0")) browser()};Solonodosraiz<-DataSinContour[DataSinContour$type=="dendrite",]
+{if (.Revo.tb("C:/Users/Laura/Documents/Revolution/Art3Orientation/0. ImportData.R|24|0")) browser()};Solonodosraiz<-Solonodosraiz[Solonodosraiz$branch_id=="ORoot",]
+#View(`Solonodosraiz`)
+
+#Calculamos centros de las neuronas en el mapa:
+{if (.Revo.tb("C:/Users/Laura/Documents/Revolution/Art3Orientation/0. ImportData.R|28|0")) browser()};CentrosNeur<-Solonodosraiz[1,] #para inicializar el dataframe CentrosNeur
+{if (.Revo.tb("C:/Users/Laura/Documents/Revolution/Art3Orientation/0. ImportData.R|29|0")) browser()};CentrosNeur$map_id<-NULL;CentrosNeur$segment_length<-NULL;CentrosNeur$point_id<-NULL;CentrosNeur$dendrite_id<-NULL;CentrosNeur$x<-NULL;CentrosNeur$y<-NULL;CentrosNeur$z<-NULL;CentrosNeur$parent<-NULL;CentrosNeur$descendants<-NULL
+{if (.Revo.tb("C:/Users/Laura/Documents/Revolution/Art3Orientation/0. ImportData.R|30|0")) browser()};ratas<-sort(unique(DataSinContour$individual))
+{if (.Revo.tb("C:/Users/Laura/Documents/Revolution/Art3Orientation/0. ImportData.R|31|0")) browser()};capas<-sort(unique(DataSinContour$layer))
+{if (.Revo.tb("C:/Users/Laura/Documents/Revolution/Art3Orientation/0. ImportData.R|32|0")) browser()};ind<-1
+{if (.Revo.tb("C:/Users/Laura/Documents/Revolution/Art3Orientation/0. ImportData.R|33|0")) browser()};for (i in ratas){
+{if (.Revo.tb("C:/Users/Laura/Documents/Revolution/Art3Orientation/0. ImportData.R|34|0")) browser()};	capasdisp<-sort(unique(DataSinContour[DataSinContour$individual==i,"layer"]))
+{if (.Revo.tb("C:/Users/Laura/Documents/Revolution/Art3Orientation/0. ImportData.R|35|0")) browser()};	for (j in capasdisp){
+{if (.Revo.tb("C:/Users/Laura/Documents/Revolution/Art3Orientation/0. ImportData.R|36|0")) browser()};		numcel<-unique(DataSinContour[DataSinContour$individual==i & DataSinContour$layer==j,"cell_id"])
+{if (.Revo.tb("C:/Users/Laura/Documents/Revolution/Art3Orientation/0. ImportData.R|37|0")) browser()};		for (k in numcel){
+{if (.Revo.tb("C:/Users/Laura/Documents/Revolution/Art3Orientation/0. ImportData.R|38|0")) browser()};			CentrosNeur[ind,"species"]<-"rat"
+{if (.Revo.tb("C:/Users/Laura/Documents/Revolution/Art3Orientation/0. ImportData.R|39|0")) browser()};			CentrosNeur[ind,"individual"]<-i
+{if (.Revo.tb("C:/Users/Laura/Documents/Revolution/Art3Orientation/0. ImportData.R|40|0")) browser()};			CentrosNeur[ind,"layer"]<-j
+{if (.Revo.tb("C:/Users/Laura/Documents/Revolution/Art3Orientation/0. ImportData.R|41|0")) browser()};			CentrosNeur[ind,"cell_id"]<-k
+{if (.Revo.tb("C:/Users/Laura/Documents/Revolution/Art3Orientation/0. ImportData.R|42|0")) browser()};			CentrosNeur[ind,"ID"]<-unique(Solonodosraiz[Solonodosraiz$individual==i & Solonodosraiz$layer==j & Solonodosraiz$cell_id==k,"ID"])
+{if (.Revo.tb("C:/Users/Laura/Documents/Revolution/Art3Orientation/0. ImportData.R|43|0")) browser()};			CentrosNeur[ind,"type"]<-unique(Solonodosraiz[Solonodosraiz$individual==i & Solonodosraiz$layer==j & Solonodosraiz$cell_id==k,"type"])
+{if (.Revo.tb("C:/Users/Laura/Documents/Revolution/Art3Orientation/0. ImportData.R|44|0")) browser()};			CentrosNeur[ind,"branch_id"]<-unique(Solonodosraiz[Solonodosraiz$individual==i & Solonodosraiz$layer==j & Solonodosraiz$cell_id==k,"branch_id"])
+{if (.Revo.tb("C:/Users/Laura/Documents/Revolution/Art3Orientation/0. ImportData.R|45|0")) browser()};			CentrosNeur[ind,"centerXroot"]<-mean(Solonodosraiz[Solonodosraiz$individual==i & Solonodosraiz$layer==j & Solonodosraiz$cell_id==k,"x"])
+{if (.Revo.tb("C:/Users/Laura/Documents/Revolution/Art3Orientation/0. ImportData.R|46|0")) browser()};			CentrosNeur[ind,"centerYroot"]<-mean(Solonodosraiz[Solonodosraiz$individual==i & Solonodosraiz$layer==j & Solonodosraiz$cell_id==k,"y"])
+{if (.Revo.tb("C:/Users/Laura/Documents/Revolution/Art3Orientation/0. ImportData.R|47|0")) browser()};			CentrosNeur[ind,"centerZroot"]<-mean(Solonodosraiz[Solonodosraiz$individual==i & Solonodosraiz$layer==j & Solonodosraiz$cell_id==k,"z"])
+{if (.Revo.tb("C:/Users/Laura/Documents/Revolution/Art3Orientation/0. ImportData.R|48|0")) browser()};			CentrosNeur[ind,"centerXsoma"]<-mean(DataSinContour[DataSinContour$individual==i & DataSinContour$layer==j & DataSinContour$cell_id==k & DataSinContour$type=="soma","x"])
+{if (.Revo.tb("C:/Users/Laura/Documents/Revolution/Art3Orientation/0. ImportData.R|49|0")) browser()};			CentrosNeur[ind,"centerYsoma"]<-mean(DataSinContour[DataSinContour$individual==i & DataSinContour$layer==j & DataSinContour$cell_id==k & DataSinContour$type=="soma","y"])
+{if (.Revo.tb("C:/Users/Laura/Documents/Revolution/Art3Orientation/0. ImportData.R|50|0")) browser()};			CentrosNeur[ind,"centerZsoma"]<-mean(DataSinContour[DataSinContour$individual==i & DataSinContour$layer==j & DataSinContour$cell_id==k & DataSinContour$type=="soma","z"])
+{if (.Revo.tb("C:/Users/Laura/Documents/Revolution/Art3Orientation/0. ImportData.R|51|0")) browser()};			ind<-ind+1			
+		}
+	}
+}
+
+{if (.Revo.tb("C:/Users/Laura/Documents/Revolution/Art3Orientation/0. ImportData.R|56|0")) browser()};write.table(TodosMapas,file="C://Users//Ileguey//Documents//Revolution//Art3Orientation//tablas//TodosMapas",append=FALSE)
+{if (.Revo.tb("C:/Users/Laura/Documents/Revolution/Art3Orientation/0. ImportData.R|57|0")) browser()};write.table(Contorno,file="C://Users//Ileguey//Documents//Revolution//Art3Orientation//tablas//Contorno",append=FALSE)
+{if (.Revo.tb("C:/Users/Laura/Documents/Revolution/Art3Orientation/0. ImportData.R|58|0")) browser()};write.table(DataSinContour,file="C://Users//Ileguey//Documents//Revolution//Art3Orientation//tablas//DatosSinContorno",append=FALSE)
+{if (.Revo.tb("C:/Users/Laura/Documents/Revolution/Art3Orientation/0. ImportData.R|59|0")) browser()};write.table(Solonodosraiz,file="C://Users//Ileguey//Documents//Revolution//Art3Orientation//tablas//NodosRaiz",append=FALSE)
+{if (.Revo.tb("C:/Users/Laura/Documents/Revolution/Art3Orientation/0. ImportData.R|60|0")) browser()};write.table(CentrosNeur,file="C://Users//Ileguey//Documents//Revolution//Art3Orientation//tablas//CentrosNeuronas",append=FALSE)
+
+##A�adido por Luis
+#
+###
+## Return a table with the center of each cell calculated via somas or Dendrite origins
+###
+#computeCellCenters <- function(table, center.names = list("species","individual","layer","cell_id","x_s","y_s","z_s","x_d","y_d","z_d") ){
+    #
+  ##Speed-up: Prefetch somas and dendrites roots
+  #somas <- table[table$type=="soma",]
+  #dendRoots <- table[is.na(table$parent) & table$type=="dendrite",]
+#
+  ## Get soma and dend roots for selected cells
+  #somas_c <- aggregate(cbind(somas$x,somas$y,somas$z),by=list(somas$species,somas$individual,somas$layer,somas$cell_id),FUN="mean")
+  #dend_c <- aggregate(cbind(dendRoots$x,dendRoots$y,dendRoots$z),by=list(dendRoots$species,dendRoots$individual,dendRoots$layer,dendRoots$cell_id),FUN="mean")
+#
+  ## Agggregate results and change colnames
+  #centers <- cbind(somas_c,dend_c[,c(5,6,7)])
+  #colnames(centers) <- center.names
+  #centers
+#}
