@@ -1,5 +1,7 @@
 # Patterns-orientation-neuron
-Code associated to the paper "Patterns of dendritic basal field orientation of pyramidal neurons in the rat somatosensory cortex"
+*Note 1: Code associated to the paper "Patterns of dendritic basal field orientation of pyramidal neurons in the rat somatosensory cortex"
+
+*Note 2: Main codes are 0. ImportData.R and 1. CalculoOrientacion.R, remaining codes are supporting these ones.
 
 0. ImportData.R	= Data imort code and table preparation
 
