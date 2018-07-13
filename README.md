@@ -11,9 +11,12 @@ Code associated to the paper "Patterns of dendritic basal field orientation of p
 
 Colors.R	= color palette
 
-Extra - RectaRegresionDendrita.R	= (optional) dendrites regresion in order to summarize their orientation onto one value
+F - ClockwiseAngle.R	= function for azimuth and angle calculation between vectors
 
-F - ClockwiseAngle.R	=
-F - ExportarExcell.R =
-F - GraphicFunctions.R =
-F - Gráficos3D.R	=
+F - ExportarExcell.R = function for excel export
+
+F - GraphicFunctions.R = functions for plot representation
+
+Extra - RectaRegresionDendrita.R	= (optional) dendrites regression in order to summarize their orientation onto one value
+
+F - Gráficos3D.R	= (optional) function for 3D representation for the dendritic regression functions
